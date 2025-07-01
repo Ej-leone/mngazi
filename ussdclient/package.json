@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "yarn && tsc",
     "start": "node dist/index.js",
     "dev": "nodemon --watch ussdclient --ext ts --exec ts-node index.ts",
     "test": "jest"

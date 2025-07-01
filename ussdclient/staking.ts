@@ -1,7 +1,7 @@
 
 // src/modules/staking.ts
 import { Database } from 'sqlite3';
-import { StakeRecord, Balance } from '../types';
+import { StakeRecord, Balance } from './types';
 
 export class StakingModule {
   private db: Database;

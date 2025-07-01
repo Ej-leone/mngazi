@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USSD Stablecoin Wealth & Enterprise Roadmap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .roadmap-container {
+            position: relative;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .roadmap {
+            display: flex;
+            gap: 30px;
+            min-width: 1200px;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #9b59b6, #e74c3c, #f39c12);
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .phase {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #3498db;
+            z-index: 2;
+        }
+
+        .phase:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .phase:nth-child(1) { border-top-color: #3498db; }
+        .phase:nth-child(2) { border-top-color: #9b59b6; }
+        .phase:nth-child(3) { border-top-color: #e74c3c; }
+        .phase:nth-child(4) { border-top-color: #f39c12; }
+
+        .phase-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .phase-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.4rem;
+            margin: 0 auto 15px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .phase:nth-child(1) .phase-number { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .phase:nth-child(2) .phase-number { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .phase:nth-child(3) .phase-number { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .phase:nth-child(4) .phase-number { background: linear-gradient(135deg, #f39c12, #e67e22); }
+
+        .phase-title h3 {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .phase-duration {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #2980b9;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .wealth-focus {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1));
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .wealth-focus h4 {
+            color: #27ae60;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-list {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .feature-list li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2c3e50;
+        }
+
+        .feature-list li:before {
+            content: "💰";
+            font-size: 0.8rem;
+        }
+
+        .enterprise-list li:before { content: "🏢"; }
+        .defi-list li:before { content: "🔄"; }
+        .scale-list li:before { content: "📈"; }
+
+        .metrics {
+            background: rgba(241, 196, 15, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .metrics strong {
+            color: #f39c12;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .metrics span {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        .key-benefits {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .key-benefits h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .benefit-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .benefit-item h4 {
+            color: #3498db;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .benefit-item p {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .roadmap {
+                flex-direction: column;
+                min-width: auto;
+            }
+            
+            .timeline-line {
+                display: none;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💎 USSD Stablecoin Wealth Creation Roadmap</h1>
+            <p>From Individual Savers to Enterprise DeFi Participation</p>
+        </div>
+
+        <div class="roadmap-container">
+            <div class="roadmap">
+                <div class="timeline-line"></div>
+
+                <!-- Phase 1: Foundation -->
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">1</div>
+                        <div class="phase-title">
+                            <h3>Foundation MVP</h3>
+                            <div class="phase-duration">Months 1-4</div>
+                        </div>
+                    </div>
+
+                    <div class="wealth-focus">
+                        <h4>💰 Wealth Building Core</h4>
+                        <ul class="feature-list">
+                            <li>8-12% APR yield earning</li>
+                            <li>Auto-compound interest</li>
+                            <li>Flexible deposit/withdrawal</li>
+                            <li>SMS earning notifications</li>
+                        </ul>
+                    </div>
+
+                    <div class="metrics">
+                        <strong>$200K TVL</strong>
+                        <span>5,000 active savers</span>
+                    </div>
+                </div>
+
+                <!-- Phase 2: SME Features -->
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">2</div>
+                        <div class="phase-title">
+                            <h3>SME Wealth Tools</h3>
+                            <div class="phase-duration">Months 3-7</div>
+                        </div>
+                    </div>
+
+                    <div class="wealth-focus">
+                        <h4>🏢 Business Growth</h4>
+                        <ul class="feature-list enterprise-list">
+                            <li>Business treasury management</li>
+                            <li>Payroll automation & savings</li>
+                            <li>Bulk payment processing</li>
+                            <li>Tiered rates: 10-15% APR</li>
+                            <li>90/180-day lock bonuses</li>
+                        </ul>
+                    </div>
+
+                    <div class="metrics">
+                        <strong>$2M TVL</strong>
+                        <span>500 SME accounts</span>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Enterprise & Multisig -->
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">3</div>
+                        <div class="phase-title">
+                            <h3>Enterprise Scale</h3>
+                            <div class="phase-duration">Months 6-10</div>
+                        </div>
+                    </div>
+
+                    <div class="wealth-focus">
+                        <h4>🏢 Corporate Treasury</h4>
+                        <ul class="feature-list enterprise-list">
+                            <li>Multisig wealth management</li>
+                            <li>Corporate lending pools</li>
+                            <li>Risk-managed portfolios</li>
+                            <li>Treasury yield optimization</li>
+                            <li>Institutional-grade security</li>
+                        </ul>
+                    </div>
+
+                    <div class="metrics">
+                        <strong>$10M TVL</strong>
+                        <span>50 enterprise clients</span>
+                    </div>
+                </div>
+
+                <!-- Phase 4: DeFi & LP -->
+                <div class="phase">
+                    <div class="phase-header">
+                        <div class="phase-number">4</div>
+                        <div class="phase-title">
+                            <h3>DeFi Wealth</h3>
+                            <div class="phase-duration">Months 8-12</div>
+                        </div>
+                    </div>
+
+                    <div class="wealth-focus">
+                        <h4>🔄 Liquidity Profits</h4>
+                        <ul class="feature-list defi-list">
+                            <li>LP token management via USSD</li>
+                            <li>15-25% LP rewards</li>
+                            <li>Automated yield farming</li>
+                            <li>Cross-DEX arbitrage</li>
+                            <li>Impermanent loss protection</li>
+                        </ul>
+                    </div>
+
+                    <div class="metrics">
+                        <strong>$50M TVL</strong>
+                        <span>2,000 LP participants</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="key-benefits">
+            <h3>🎯 Wealth Creation Opportunities</h3>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h4>Individual Savers</h4>
+                    <p>8-12% APR beats traditional savings. Build wealth through mobile phone.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>SME Growth</h4>
+                    <p>Business treasury earns 15% while maintaining liquidity for operations.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>Enterprise Scale</h4>
+                    <p>Corporate multisig wallets with institutional-grade DeFi access.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>DeFi Participation</h4>
+                    <p>LP rewards up to 25% APR through simplified USSD interface.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth animations on scroll
+        const phases = document.querySelectorAll('.phase');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                    }, index * 200);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        phases.forEach(phase => {
+            phase.style.opacity = '0';
+            phase.style.transform = 'translateY(30px) scale(0.95)';
+            phase.style.transition = 'all 0.6s ease';
+            observer.observe(phase);
+        });
+
+        // Add hover effects
+        phases.forEach(phase => {
+            phase.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            phase.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+ussdclient/node_modules/
+*/node_modules/
+**/node_modules/
+*/*/node_modules/
+
+# Environment variables
+.env
+
+# TypeScript build output
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional: VSCode settings
+.vscode/

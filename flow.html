@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USSD Stablecoin System Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-diagram {
+            position: relative;
+            width: 100%;
+            height: 1200px;
+            margin: 0 auto;
+        }
+
+        .node {
+            position: absolute;
+            padding: 15px 20px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .node:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .start {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+        }
+
+        .menu {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+        }
+
+        .main-options {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            top: 250px;
+            width: 160px;
+        }
+
+        .option1 { left: 20%; }
+        .option2 { left: 50%; transform: translateX(-50%); }
+        .option3 { left: 80%; transform: translateX(-100%); }
+
+        .sub-flow {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            width: 200px;
+            font-size: 0.9rem;
+        }
+
+        .deposit-flow .sub1 { top: 380px; left: 5%; }
+        .deposit-flow .sub2 { top: 500px; left: 5%; }
+        .deposit-flow .sub3 { top: 620px; left: 5%; }
+
+        .earn-flow .sub1 { top: 380px; left: 50%; transform: translateX(-50%); }
+        .earn-flow .sub2 { top: 500px; left: 50%; transform: translateX(-50%); }
+
+        .withdraw-flow .sub1 { top: 380px; right: 5%; }
+        .withdraw-flow .sub2 { top: 500px; right: 5%; }
+        .withdraw-flow .sub3 { top: 620px; right: 5%; }
+
+        .blockchain {
+            background: linear-gradient(135deg, #1a5276, #154360);
+            top: 750px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .oracle-section {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            top: 870px;
+            width: 180px;
+            font-size: 0.9rem;
+        }
+
+        .oracle1 { left: 25%; }
+        .oracle2 { left: 75%; transform: translateX(-100%); }
+
+        .compliance {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            top: 1000px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            font-size: 0.9rem;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(to bottom, #34495e, #2c3e50);
+            transform-origin: top;
+            opacity: 0.7;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 10px solid #2c3e50;
+        }
+
+        /* Curved arrows for complex connections */
+        .curved-arrow {
+            position: absolute;
+            border: 2px solid #34495e;
+            border-radius: 50px;
+            opacity: 0.6;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #2c3e50;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .flow-diagram {
+                height: 1400px;
+            }
+            .node {
+                font-size: 0.8rem;
+                padding: 10px 15px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 USSD Stablecoin System Flow</h1>
+        
+        <div class="flow-diagram">
+            <!-- Start Node -->
+            <div class="node start">📱 User Dial *789#</div>
+            
+            <!-- Main Menu -->
+            <div class="node menu">📋 USSD Menu</div>
+            
+            <!-- Main Options -->
+            <div class="node main-options option1">💰 1. Deposit Funds</div>
+            <div class="node main-options option2">📈 2. Earn Interest</div>
+            <div class="node main-options option3">💸 3. Withdraw Funds</div>
+            
+            <!-- Deposit Flow -->
+            <div class="deposit-flow">
+                <div class="node sub-flow sub1">
+                    💵 Enter M-Pesa amount<br>
+                    <small>(e.g. KES 5,000)</small>
+                </div>
+                <div class="node sub-flow sub2">
+                    ✅ Confirm conversion<br>
+                    <small>to USDA stablecoin</small>
+                </div>
+                <div class="node sub-flow sub3">
+                    🔒 Smart Contract Triggered<br>
+                    <small>• Auto-locks funds<br>
+                    • Mints USDA tokens<br>
+                    • Records on blockchain</small>
+                </div>
+            </div>
+            
+            <!-- Earn Flow -->
+            <div class="earn-flow">
+                <div class="node sub-flow sub1">
+                    📊 Real-Time Yield Dashboard<br>
+                    <small>• Current APR: 9.5%<br>
+                    • Daily Earnings: KES 12.30</small>
+                </div>
+                <div class="node sub-flow sub2">
+                    🎯 Staking Smart Contract<br>
+                    <small>• Auto-compounds rewards<br>
+                    • Auditable on-chain</small>
+                </div>
+            </div>
+            
+            <!-- Withdraw Flow -->
+            <div class="withdraw-flow">
+                <div class="node sub-flow sub1">
+                    📝 Enter Withdrawal<br>
+                    <small>Amount</small>
+                </div>
+                <div class="node sub-flow sub2">
+                    ⚡ Smart Contract Executes<br>
+                    <small>• Unstakes USDA<br>
+                    • Converts to KES<br>
+                    • Burns stablecoins</small>
+                </div>
+                <div class="node sub-flow sub3">
+                    💬 Instant M-Pesa Credit<br>
+                    <small>+ SMS Confirmation</small>
+                </div>
+            </div>
+            
+            <!-- Blockchain Core -->
+            <div class="node blockchain">
+                ⛓️ Cardano Blockchain
+            </div>
+            
+            <!-- Oracle Section -->
+            <div class="oracle-section">
+                <div class="node sub-flow oracle1">
+                    🌐 Live Forex Rates<br>
+                    <small>KES/USD</small>
+                </div>
+                <div class="node sub-flow oracle2">
+                    📊 Yield Rate Data
+                </div>
+            </div>
+            
+            <!-- Compliance -->
+            <div class="node compliance">
+                🛡️ Regulatory Compliance Module<br>
+                <small>• CBK reporting<br>
+                • Anti-fraud checks</small>
+            </div>
+            
+            <!-- Arrows -->
+            <div class="arrow" style="top: 110px; left: 50%; height: 30px;"></div>
+            <div class="arrow" style="top: 210px; left: 50%; height: 30px;"></div>
+            
+            <!-- Menu to options arrows -->
+            <div class="arrow" style="top: 200px; left: 45%; height: 60px; transform: rotate(-30deg);"></div>
+            <div class="arrow" style="top: 200px; left: 50%; height: 60px;"></div>
+            <div class="arrow" style="top: 200px; left: 55%; height: 60px; transform: rotate(30deg);"></div>
+            
+            <!-- Sub-flow arrows -->
+            <div class="arrow" style="top: 340px; left: 15%; height: 110px;"></div>
+            <div class="arrow" style="top: 460px; left: 15%; height: 110px;"></div>
+            <div class="arrow" style="top: 340px; left: 50%; height: 110px;"></div>
+            <div class="arrow" style="top: 340px; right: 15%; height: 110px;"></div>
+            <div class="arrow" style="top: 460px; right: 15%; height: 110px;"></div>
+            
+            <!-- To blockchain arrows -->
+            <div class="arrow" style="top: 680px; left: 15%; height: 60px; transform: rotate(20deg);"></div>
+            <div class="arrow" style="top: 560px; left: 50%; height: 180px;"></div>
+            <div class="arrow" style="top: 680px; right: 15%; height: 60px; transform: rotate(-20deg);"></div>
+            
+            <!-- Oracle arrows -->
+            <div class="arrow" style="top: 830px; left: 35%; height: 30px; transform: rotate(-20deg);"></div>
+            <div class="arrow" style="top: 830px; right: 35%; height: 30px; transform: rotate(20deg);"></div>
+            
+            <!-- Compliance arrow -->
+            <div class="arrow" style="top: 840px; left: 50%; height: 50px;"></div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #2ecc71, #27ae60);"></div>
+                <span>Entry Point</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #3498db, #2980b9);"></div>
+                <span>Main Menu</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);"></div>
+                <span>Core Functions</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #1a5276, #154360);"></div>
+                <span>Blockchain Layer</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #f39c12, #e67e22);"></div>
+                <span>Oracle Services</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive hover effects and click animations
+        document.querySelectorAll('.node').forEach(node => {
+            node.addEventListener('mouseenter', function() {
+                this.style.transform += ' rotate(2deg)';
+            });
+            
+            node.addEventListener('mouseleave', function() {
+                this.style.transform = this.style.transform.replace(' rotate(2deg)', '');
+            });
+            
+            node.addEventListener('click', function() {
+                this.style.animation = 'pulse 0.6s ease-in-out';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 600);
+            });
+        });
+
+        // Add pulse animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
