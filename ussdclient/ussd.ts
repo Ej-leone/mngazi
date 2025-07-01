@@ -48,19 +48,26 @@ export class USSDModule {
   private async handleUSSDRequest(req: Request, res: Response): Promise<void> {
     try {
       const { sessionId, phoneNumber, text } = req.body;
-      
+ 
       // Validate input
       if (!sessionId || !phoneNumber) {
         res.json({ text: 'CON Error: Invalid request parameters' });
         return;
       }
 
-      const session = this.getOrCreateSession(sessionId, phoneNumber);
+      const session = await this.getOrCreateSession(sessionId, phoneNumber);
+
+
+      
       const response = await this.processUSSDInput(session, text || '');
       
-      res.json({ text: response });
+     
+      res.contentType('text/plain');
+      res.send(response);
     } catch (error) {
-      console.error('USSD Error:', error);
+
+      console.log('USSD Error:', error);
+
       res.json({ text: 'END Error processing request. Please try again.' });
     }
   }
@@ -163,10 +170,11 @@ Welcome to Mngazi. Please dial again to access the main menu.`;
       }
     
       private async showMainMenu(session: USSDSession): Promise<string> { 
-        return ` Welcome to Mngazi
+        return `CON  Welcome to Mngazi
 MAIN MENU
 1. About & Guide
 2. Deposit 
+3. Stake
 4. Check Balance & Profile
 5. Withdraw
 6. Exit`;
