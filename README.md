@@ -53,12 +53,9 @@ This project provides a USSD gateway for wallet, deposit, staking, and withdrawa
 
    The server will start on port 3000 by default.
 
-5. **Test the USSD endpoint**
 
-   - Health check: [http://localhost:3000/health](http://localhost:3000/health)
-   - USSD endpoint: [http://localhost:3000/ussd](http://localhost:3000/ussd)
 
-   You can use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/) to simulate USSD requests.
+ 
 
 ## Project Structure
 
@@ -96,6 +93,11 @@ You can test the deployed USSD service using the Africa's Talking USSD Simulator
 3. Dial `*384*14589#` in the simulator to access the Mngazi USSD menu.
 
 Additionally, users can acquire the `bruno.json` file located in the `Mngazi` folder. This file contains essential configuration details for the Mngazi project.
+
+  - Health check: [http://localhost:3000/health](http://localhost:3000/health)
+   - USSD endpoint: [http://localhost:3000/ussd](http://localhost:3000/ussd)
+
+You can use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/) to simulate USSD requests.
 
 > **Disclaimer:**  
 > The service is hosted on the free tier at Render. You may experience a wait period of up to a minute for the first request as the server may be waking up from sleep.
