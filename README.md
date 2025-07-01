@@ -95,18 +95,20 @@ You can test the deployed USSD service using the Africa's Talking USSD Simulator
 2. Enter your phone number in the simulator.
 3. Dial `*384*14589#` in the simulator to access the Mngazi USSD menu.
 
+Additionally, users can acquire the `bruno.json` file located in the `Mngazi` folder. This file contains essential configuration details for the Mngazi project.
+
 > **Disclaimer:**  
 > The service is hosted on the free tier at Render. You may experience a wait period of up to a minute for the first request as the server may be waking up from sleep.
 
 ## Roadmap
 
 For a detailed roadmap of the project, see:  
-[USSD Stablecoin Wealth Creation Roadmap](https://ej-leone.github.io/mngazi/roadmap.html)
+[ Roadmap](https://ej-leone.github.io/mngazi/roadmap.html)
 
 ## System Flow
 
 For a visual overview of the USSD system flow, see:  
-[USSD Stablecoin System Flow](https://ej-leone.github.io/mngazi/flow.html)
+[ System Flow](https://ej-leone.github.io/mngazi/flow.html)
 
 
     
