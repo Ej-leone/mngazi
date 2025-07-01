@@ -80,6 +80,17 @@ export class WalletModule {
     return await walletRepo.findOneBy({ phone });
   }
 
+
+
+  public async getBalance(phone: string): Promise<{ balance: number }> {
+    const wallet = await this.getWallet(phone);
+    if (!wallet) {
+      throw new Error('Wallet not found');
+    }
+
+    //todo implement
+    return  { balance: 1000 };
+  }
   /**
    * Get all wallets
    */

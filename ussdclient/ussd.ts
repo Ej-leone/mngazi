@@ -111,7 +111,7 @@ export class USSDModule {
             return await this.handleWithdrawConfirmation(session, lastInput);
           
           default:
-            return this.showMainMenu(session);
+            return this.showMainMenu();
         }
       }
     
@@ -150,26 +150,26 @@ Welcome to Mngazi. Please dial again to access the main menu.`;
       private async handleMainMenu(session: USSDSession, input: string): Promise<string> {
         switch (input) {
           case '1':
-            return 'CON About & Guide...'; // Replace with your about/guide logic
-          // case '2':
-          //   session.currentMenu = 'deposit_amount';
-          //   return 'CON Enter deposit amount (USD):\n0. Back to main menu';
-          // case '3':
-          //   session.currentMenu = 'stake_amount';
-          //   return 'CON Enter amount to stake (USDA):\n0. Back to main menu';
-          // case '4':
-          //   return this.handleCheckBalance(session);
-          // case '5':
-          //   session.currentMenu = 'withdraw_confirmation';
-          //   return this.handleWithdrawMenu(session);
-          // case '6':
-          //   return 'END Thank you for using !';
+            return 'CON About US  \n © Mngazi a foundational wealth-building platform that offers users an 8-12% APR yield earning, auto-compounding interest, and flexible deposit and withdrawal options, all designed to empower individual savers and promote financial growth.'; // Replace with your about/guide logic
+          case '2':
+            session.currentMenu = 'deposit_amount';
+            return 'CON Enter deposit amount (KES):\n0. Back to main menu';
+          case '3':
+            session.currentMenu = 'stake_amount';
+            return 'CON Enter amount to stake (USDA):\n0. Back to main menu';
+          case '4':
+            return this.handleCheckBalance(session);
+          case '5':
+            session.currentMenu = 'withdraw_confirmation';
+            return 'CON Enter withdrawal amount (KES):\n0. Back to main menu';
+          case '6':
+            return 'END Thank you for using !';
           default:
-            return this.showMainMenu(session);
+            return this.showMainMenu();
         }
       }
     
-      private async showMainMenu(session: USSDSession): Promise<string> { 
+      private async showMainMenu(): Promise<string> { 
         return `CON  Welcome to Mngazi
 MAIN MENU
 1. About & Guide
@@ -188,7 +188,7 @@ MAIN MENU
         // If user wants to go back
         if (input === '0') {
           session.currentMenu = 'main';
-          return this.showMainMenu(session);
+          return this.showMainMenu();
         }
         // Validate amount (simple check)
         const amount = parseFloat(input);
@@ -208,7 +208,7 @@ MAIN MENU
         // If user wants to go back
         if (input === '0') {
           session.currentMenu = 'main';
-          return this.showMainMenu(session);
+          return this.showMainMenu();
         }
         // Validate amount (simple check)
         const amount = parseFloat(input);
@@ -234,7 +234,7 @@ MAIN MENU
         // If user wants to go back
         if (input === '0') {
           session.currentMenu = 'main';
-          return this.showMainMenu(session);
+          return this.showMainMenu();
         }
         // Validate amount (simple check)
         const amount = parseFloat(input);
@@ -252,6 +252,19 @@ MAIN MENU
         // To be implemented later
       }
     
+
+      private async handleCheckBalance(session: USSDSession): Promise<string> {
+        const result = await this.walletModule.getBalance(session.phoneNumber);
+        return `CON 
+Your Wallet balance is ${result.balance} KES.
+Your Stake amount is ${result.balance} KES.
+Your Total Rewards is ${result.balance} USD.`
+      }
+
+
+
+
+
       public startServer(port: number = 3000): void {
         this.app.listen(port, () => {
           console.log(`USSD Gateway running on port ${port}`);

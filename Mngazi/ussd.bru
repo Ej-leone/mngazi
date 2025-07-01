@@ -5,7 +5,15 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://localhost:3000/ussd
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "sessionId":"xcxc11-test",
+    "phoneNumber":"+254726504619",
+    "text":"3*30" 
+  }
 }
