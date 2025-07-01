@@ -94,14 +94,14 @@ export class USSDModule {
       case 'main':
         return this.handleMainMenu(session, lastInput);
       
-      // case 'deposit_amount':
-      //   return await this.handleDepositAmount(session, lastInput);
+      case 'deposit_amount':
+        return await this.handleDepositAmount(session, lastInput);
       
-      //   case 'stake_amount':
-      //       return await this.handleStakeAmount(session, lastInput);
+        case 'stake_amount':
+            return await this.handleStakeAmount(session, lastInput);
           
-      //     case 'withdraw_confirmation':
-      //       return await this.handleWithdrawConfirmation(session, lastInput);
+          case 'withdraw_confirmation':
+            return await this.handleWithdrawConfirmation(session, lastInput);
           
           default:
             return this.showMainMenu(session);
@@ -170,6 +170,78 @@ MAIN MENU
 4. Check Balance & Profile
 5. Withdraw
 6. Exit`;
+      }
+    
+      private async handleDepositAmount(session: USSDSession, input: string): Promise<string> {
+        // If no input, prompt for amount
+        if (!input) {
+          return 'CON Enter deposit amount (USD):\n0. Back to main menu';
+        }
+        // If user wants to go back
+        if (input === '0') {
+          session.currentMenu = 'main';
+          return this.showMainMenu(session);
+        }
+        // Validate amount (simple check)
+        const amount = parseFloat(input);
+        if (isNaN(amount) || amount <= 0) {
+          return 'CON Invalid amount. Please enter a valid deposit amount (USD):\n0. Back to main menu';
+        }
+        // Here you would process the deposit (not implemented)
+        session.currentMenu = 'main';
+        return `END Deposit of $${amount} received. (Processing not implemented)`;
+      }
+
+      private async handleWithdrawConfirmation(session: USSDSession, input: string): Promise<string> {
+        // If no input, prompt for amount
+        if (!input) {
+          return 'CON Enter withdrawal amount (USD):\n0. Back to main menu';
+        }
+        // If user wants to go back
+        if (input === '0') {
+          session.currentMenu = 'main';
+          return this.showMainMenu(session);
+        }
+        // Validate amount (simple check)
+        const amount = parseFloat(input);
+        if (isNaN(amount) || amount <= 0) {
+          return 'CON Invalid amount. Please enter a valid withdrawal amount (USD):\n0. Back to main menu';
+        }
+        // Here you would process the withdrawal (not implemented)
+        await this.processWithdraw(session, amount); // currently empty
+        session.currentMenu = 'main';
+        return `END Withdrawal of $${amount} received. (Processing not implemented)`;
+      }
+
+      // Placeholder for withdrawal processing
+      private async processWithdraw(session: USSDSession, amount: number): Promise<void> {
+        // To be implemented later
+      }
+
+      private async handleStakeAmount(session: USSDSession, input: string): Promise<string> {
+        // If no input, prompt for amount
+        if (!input) {
+          return 'CON Enter amount to stake (USDA):\n0. Back to main menu';
+        }
+        // If user wants to go back
+        if (input === '0') {
+          session.currentMenu = 'main';
+          return this.showMainMenu(session);
+        }
+        // Validate amount (simple check)
+        const amount = parseFloat(input);
+        if (isNaN(amount) || amount <= 0) {
+          return 'CON Invalid amount. Please enter a valid stake amount (USDA):\n0. Back to main menu';
+        }
+        // Here you would process the stake (not implemented)
+        await this.processStake(session, amount); // currently empty
+        session.currentMenu = 'main';
+        return `END Stake of ${amount} USDA received. (Processing not implemented)`;
+      }
+
+      // Placeholder for stake processing
+      private async processStake(session: USSDSession, amount: number): Promise<void> {
+        // To be implemented later
       }
     
       public startServer(port: number = 3000): void {

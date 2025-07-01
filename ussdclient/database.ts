@@ -1,12 +1,14 @@
-import { DataSource , Entity, PrimaryColumn, Column, OneToMany, OneToOne, ManyToOne , CreateDateColumn , PrimaryGeneratedColumn } from "typeorm";
+import { DataSource, Entity, ObjectIdColumn, ObjectId, Column, OneToMany, ManyToOne, CreateDateColumn } from "typeorm";
 import env from 'env-var';
 
 const mongoUrl = env.get('MONGO_URL').required().asString();
 
-
 @Entity()
 export class WalletEntity {
-  @PrimaryColumn()
+  @ObjectIdColumn()
+  _id!: ObjectId;
+
+  @Column({ unique: true })
   phone!: string;
 
   @Column({ unique: true })
@@ -30,16 +32,16 @@ export class WalletEntity {
 
 @Entity()
 export class FiatTransactionEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @ObjectIdColumn()
+  _id!: ObjectId;
 
   @Column()
   phone!: string;
 
   @Column()
-  type!: string; // 'deposit', 'withdraw', 
+  type!: string; // 'deposit', 'withdraw'
 
-  @Column({ type: "float" })
+  @Column({ type: "double" }) // Use 'double' instead of 'float' for MongoDB
   amount!: number;
 
   @Column({ default: "pending" })
@@ -51,13 +53,9 @@ export class FiatTransactionEntity {
   @Column()
   transactionhash!: string;
 
-  
-   @ManyToOne(() => WalletEntity, wallet => wallet.transactions)
-   wallet!: WalletEntity;
+  @ManyToOne(() => WalletEntity, wallet => wallet.transactions)
+  wallet!: WalletEntity;
 }
-
-
-
 
 export const AppDataSource = new DataSource({
   type: "mongodb",
@@ -65,4 +63,5 @@ export const AppDataSource = new DataSource({
   synchronize: true, // set to false in production and use migrations
   logging: false,
   entities: [WalletEntity, FiatTransactionEntity],
+  //useUnifiedTopology: true, // Add this for better MongoDB connection handling
 });

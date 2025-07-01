@@ -1,6 +1,6 @@
 import { AppDataSource } from './database';
 import { WalletEntity, FiatTransactionEntity } from './database';
-import { DepositResult, WithdrawResult } from '../types';
+import { DepositResult, WithdrawResult } from './types';
 
 export class OfframpModule {
  

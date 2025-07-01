@@ -1,5 +1,6 @@
-import 'dotenv/config';
 import "reflect-metadata";
+import 'dotenv/config';
+
 import { AppDataSource } from './database';
 import { WalletModule } from './wallet';
 import { OfframpModule } from './offramp';
@@ -19,11 +20,11 @@ async function main() {
     
     // Initialize database
     initializeDatabase()
-    //const database = dbManager.getDatabase();
+ 
     
     // Initialize modules
      const walletModule = new WalletModule();
-    //const offrampModule = new OfframpModule(database);
+    const offrampModule = new OfframpModule();
     //const stakingModule = new StakingModule(database);
      const ussdModule = new USSDModule(walletModule) // (database,, offrampModule, stakingModule);
     
