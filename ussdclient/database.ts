@@ -11,7 +11,7 @@ export class WalletEntity {
   @Column({ unique: true })
   phone!: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true ,  })
   wallet_id!: string;
   
   @Column()
@@ -20,8 +20,6 @@ export class WalletEntity {
   @Column()
   stake_addr!: string;
 
-  @Column()
-  mnemonic!: string;
 
   @CreateDateColumn()
   created_at!: Date;

@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@blockfrost/blockfrost-js": "^6.0.0",
+    "@emurgo/cardano-serialization-lib-nodejs": "^14.1.2",
     "@types/node": "^24.0.8",
     "bip32": "^4.0.0",
     "bip39": "^3.1.0",
