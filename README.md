@@ -98,11 +98,15 @@ You can test the deployed USSD service using the Africa's Talking USSD Simulator
 > **Disclaimer:**  
 > The service is hosted on the free tier at Render. You may experience a wait period of up to a minute for the first request as the server may be waking up from sleep.
 
-## Notes
+## Roadmap
 
-- The deposit, withdraw, and stake flows currently have placeholder logic for processing amounts.
-- Make sure to implement the actual business logic in the respective placeholder functions.
+For a detailed roadmap of the project, see:  
+[USSD Stablecoin Wealth Creation Roadmap](https://ej-leone.github.io/mngazi/roadmap.html)
 
-## License
+## System Flow
 
-MIT (or specify your license)
+For a visual overview of the USSD system flow, see:  
+[USSD Stablecoin System Flow](https://ej-leone.github.io/mngazi/flow.html)
+
+
+    
