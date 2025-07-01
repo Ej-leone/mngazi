@@ -119,7 +119,7 @@ export class USSDModule {
         // First step: show signup confirmation
         if (!input) {
           session.currentMenu = 'signup_confirm';
-          return ` Welcome to Mngazi
+          return `CON Welcome to Mngazi
 You are not registered.
 Press 1 to sign up, 2 to cancel.`;
         }
