@@ -1,5 +1,4 @@
-import * as bip39 from 'bip39';
-import * as bip32 from 'bip32';
+
 import { AppDataSource } from './database';
 import { WalletEntity } from './database'; // adjust import if needed
 import * as ecc from 'tiny-secp256k1';
@@ -28,22 +27,13 @@ export class WalletModule {
         throw new Error('Wallet already exists for this phone number');
       }
 
-      const {     paymentKey,
-        stakeKey,
-        address,
+      const {   mnemonic,
         paymentAddress }  =     generateCardanoKeys()
     
       // 
       const wallet_id = this.generateWalletId();
     
 
-      console.log({
-        stake_addr:stakeKey,
-        payment_addr:paymentKey,
-        wallet_id,
-        phone,
-       
-      })
 
       // Create and save wallet entity
       const walletRepo = AppDataSource.getRepository(WalletEntity);
@@ -51,6 +41,7 @@ export class WalletModule {
         phone,
         wallet_id,
         payment_addr:paymentAddress,
+        mnemonic
    
       });
       await walletRepo.save(wallet);

@@ -1,3 +1,5 @@
+import * as bip39 from 'bip39';
+import * as bip32 from 'bip32';
 import * as CardanoWasm from '@emurgo/cardano-serialization-lib-nodejs';
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 
@@ -8,10 +10,11 @@ const blockfrost = new BlockFrostAPI({
 });
 
 interface WalletKeys {
-  paymentKey: CardanoWasm.PrivateKey;
-  stakeKey: CardanoWasm.PrivateKey;
-  address: CardanoWasm.Address;
+//   paymentKey: CardanoWasm.PrivateKey;
+//   stakeKey: CardanoWasm.PrivateKey;
+//   address: CardanoWasm.Address;
   paymentAddress: string;
+  mnemonic: string
 }
 
 interface TransactionResult {
@@ -32,6 +35,8 @@ interface StakeRewards {
  */
 export function generateCardanoKeys(): WalletKeys {
   try {
+    const mnemonic = bip39.generateMnemonic(24); // 24 words
+    const entropy = bip39.mnemonicToEntropy(mnemonic);
     // Generate payment key pair
     const paymentKey = CardanoWasm.PrivateKey.generate_ed25519();
     const paymentPubKey = paymentKey.to_public();
@@ -58,14 +63,13 @@ export function generateCardanoKeys(): WalletKeys {
       stakeCred
     );
     
-    const address = baseAddress.to_address();
-    const paymentAddress = address.to_bech32();
-    
+   
+    const paymentAddress =baseAddress.to_address().to_bech32();
+
+   
     return {
-      paymentKey,
-      stakeKey,
-      address,
-      paymentAddress
+      paymentAddress,
+      mnemonic
     };
   } catch (error) {
     throw new Error(`Failed to generate Cardano address: ${error}`);

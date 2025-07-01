@@ -18,6 +18,9 @@ export class WalletEntity {
   payment_addr!: string;
 
   @Column()
+  mnemonic!: string;
+
+  @Column()
   stake_addr!: string;
 
 
