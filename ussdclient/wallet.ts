@@ -2,7 +2,7 @@
 import { AppDataSource } from './database';
 import { WalletEntity } from './database'; // adjust import if needed
 import * as ecc from 'tiny-secp256k1';
-import { generateCardanoKeys } from './chains/cardano';
+import { generateCardanoKeys, getCardanoBalance } from './chains/cardano';
 
 export class WalletModule {
   
@@ -66,14 +66,15 @@ export class WalletModule {
 
 
 
-  public async getBalance(phone: string): Promise<{ balance: number }> {
+  public async getBalance(phone: string): Promise<{ balance: number ; ada: string; wallet: string }> {
     const wallet = await this.getWallet(phone);
     if (!wallet) {
       throw new Error('Wallet not found');
     }
+   
+    const result = await getCardanoBalance(wallet.payment_addr)
 
-    //todo implement
-    return  { balance: 1000 };
+    return  { balance:Number.parseFloat(result.usda) , ada: result.ada  , wallet: result.wallet};
   }
   /**
    * Get all wallets

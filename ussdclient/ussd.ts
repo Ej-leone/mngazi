@@ -256,6 +256,8 @@ MAIN MENU
       private async handleCheckBalance(session: USSDSession): Promise<string> {
         const result = await this.walletModule.getBalance(session.phoneNumber);
         return `CON 
+Wallet Address ${result.wallet} 
+Your Ada balance is ${result.ada} KES.
 Your Wallet balance is ${result.balance} KES.
 Your Stake amount is ${result.balance} KES.
 Your Total Rewards is ${result.balance} USD.`
