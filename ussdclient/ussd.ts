@@ -193,7 +193,7 @@ ${t.t('signupPrompt')}`;
     }
   }
     
-  private async showMainMenu(session: USSDSession): Promise<string> {
+  private  showMainMenu(session: USSDSession):string {
     const t = session.langManager;
     const chainName = session.selectedChain === 'cardano' ? 'Cardano (ADA)' : 'Bitcoin Lightning (BTC)';
     
@@ -346,7 +346,7 @@ Lightning: ${result.lightning || 0} sats
         return this.handleChainSelect(session, '');
       case '0':
         session.currentMenu = 'main';
-        return this.showMainMenu(session);
+        return  this.showMainMenu(session);
       default:
         return `CON ${t.t('settingsMenu')}
 1. ${t.t('changeLanguage')}

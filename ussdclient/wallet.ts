@@ -66,7 +66,7 @@ export class WalletModule {
 
 
 
-  public async getBalance(phone: string): Promise<{ balance: number ; ada: string; wallet: string }> {
+  public async getBalance(phone: string): Promise<{onchain?: number; lightning?: number; balance: number ; ada: string; wallet: string }> {
     const wallet = await this.getWallet(phone);
     if (!wallet) {
       throw new Error('Wallet not found');
